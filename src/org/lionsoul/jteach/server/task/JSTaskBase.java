@@ -49,6 +49,7 @@ public abstract class JSTaskBase implements Runnable {
 
 	@Override
 	public void run() {
+		server.println(String.format("task %s is now running", this.getClass().getName()));
 		// 1, run the task
 		_run();
 		// 2, task finished and call the exit callback
@@ -56,7 +57,7 @@ public abstract class JSTaskBase implements Runnable {
 		// 3, check and notify the wait lock
 		if (_wait()) {
 			synchronized (lock) {
-				lock.notifyAll();
+				lock.notify();
 			}
 		}
 	}
@@ -69,7 +70,6 @@ public abstract class JSTaskBase implements Runnable {
 			return false;
 		}
 
-		server.println(String.format("task %s is now running", this.getClass().getName()));
 		JBean.threadPool.execute(this);
 		if (_wait()) {
 			synchronized (lock) {

@@ -206,7 +206,6 @@ public class JServer implements Runnable {
 				beanList.add(bean);
 				bean.start();
 				lnPrintln("new client %s connected", bean.getName());
-				printInputAsk();
 
 				/* check and add the new client to the running task */
 				if (JSTask != null) {
